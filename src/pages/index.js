@@ -8,6 +8,7 @@ import Navbar from './Navbar'
 import Terms from './Terms'
 import Content from './Content'
 import Dashboard from './Dashboard'
+import Subscribe from './Subscribe'
 
 
 
@@ -23,6 +24,7 @@ export default function Home() {
     {/* <Terms /> */}
     {/* <Content /> */}
     {/* <Dashboard /> */}
+    {/* <Subscribe /> */}
     </>
   )
 }

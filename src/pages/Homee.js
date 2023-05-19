@@ -2,9 +2,30 @@ import React from 'react'
 import Image from 'next/image'
 import Head from 'next/head'
 import Link from 'next/link'
+import { loadStripe } from '@stripe/stripe-js';
+import { useState } from 'react';
+
+const stripePromise = loadStripe('pk_test_51N9UveSCOOyqFJgR7RagttAZlMeCk10wKTV5tNfKVTBopGA8C9YQUgKjUv0tOfHm9P4r0PzYZlRgv5r3kBFT0d3a00vC9E8msn');
 
 
 const Homee = () => {
+  const [loading, setLoading] = useState(false);
+  
+    const handleClick = async () => {
+      setLoading(true);
+      const stripe = await stripePromise;
+      console.log('Stripe:', stripe);
+      const { error } = await stripe.redirectToCheckout({
+        lineItems: [{ price: 'price_1N9UyNSCOOyqFJgRTG9dCmUL', quantity: 1 }],
+        mode: 'subscription',
+        successUrl: 'http://your-website.com/success',
+        cancelUrl: 'http://your-website.com/cancel',
+      });
+      if (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
   return (
     <>
       <div className="home-container">
@@ -293,9 +314,12 @@ const Homee = () => {
                 <span>USD / Month</span>
               </span>
               <div className="home-abtn">
-                <span className="home-text088">
-                  <span>Subscribe Now</span>
-                </span>
+                {/* <span className="home-text088">
+                  <span>   Subscribe Now</span>
+                </span> */}
+                <button onClick={handleClick} disabled={loading}>
+          {loading ? 'Loading...' : '   Subscribe'}
+        </button>
               </div>
               <div className="home-ulfs123">
                 <div className="home-li09">
@@ -339,15 +363,21 @@ const Homee = () => {
           <span className="home-text108">
             <span>USD / Month</span>
           </span>
-          <div className="home-abtn1">
-            <span className="home-text110">
-              <span>Subscribe Now</span>
-            </span>
-          </div>
+          {/* <div className="home-abtn1"> */}
+            {/* <span className="home-text110">
+              <span>   Subscribe Now</span>
+            </span> */}
+            <button className="home-abtn1" onClick={handleClick} disabled={loading}>
+          {loading ? 'Loading...' : '   Subscribe'}
+        </button>
+          {/* </div> */}
           <div className="home-abtn2">
-            <span className="home-text112">
-              <span>Subscribe Now</span>
-            </span>
+            {/* <span className="home-text112">
+              <span>   Subscribe Now</span>
+            </span> */}
+            <button onClick={handleClick} disabled={loading}>
+          {loading ? 'Loading...' : '   Subscribe'}
+        </button>
           </div>
           <div className="home-ulfs124">
             <div className="home-li13">
@@ -7657,10 +7687,13 @@ const Homee = () => {
           }
           .home-abtn {
             top: 143px;
-            left: 58px;
+            left: 50px;
             width: 145px;
             height: 29px;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            color:white;
             overflow: hidden;
             position: absolute;
             box-shadow: 0px 1px 3px 0px rgba(50, 50, 50, 0.20000000298023224);
@@ -7863,14 +7896,18 @@ const Homee = () => {
           }
           .home-abtn1 {
             top: 4928px;
-            left: 289px;
+            left: 300px;
             width: 145px;
             height: 29px;
             display: flex;
+            
             overflow: hidden;
             position: absolute;
             box-shadow: 0px 1px 3px 0px rgba(50, 50, 50, 0.20000000298023224);
-            align-items: flex-start;
+            justify-content: center;
+            align-items: center;
+            color:white;
+            
             flex-shrink: 0;
             border-color: rgba(210, 0, 26, 1);
             border-style: solid;
@@ -7900,6 +7937,9 @@ const Homee = () => {
             width: 145px;
             height: 29px;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            color:white;
             overflow: hidden;
             position: absolute;
             box-shadow: 0px 1px 3px 0px rgba(50, 50, 50, 0.20000000298023224);

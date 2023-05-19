@@ -2,7 +2,33 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome,faSearch,faBell, faUser, faCog, faBriefcase, faChartBar, faEnvelope, faCalendar, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
-const Navbar = () => (
+import { loadStripe } from '@stripe/stripe-js';
+import { useState } from 'react';
+
+
+const stripePromise = loadStripe('pk_test_51N9UveSCOOyqFJgR7RagttAZlMeCk10wKTV5tNfKVTBopGA8C9YQUgKjUv0tOfHm9P4r0PzYZlRgv5r3kBFT0d3a00vC9E8msn');
+
+
+function Navbar() {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    const stripe = await stripePromise;
+    console.log('Stripe:', stripe);
+    const { error } = await stripe.redirectToCheckout({
+      lineItems: [{ price: 'price_1N9UyNSCOOyqFJgRTG9dCmUL', quantity: 1 }],
+      mode: 'subscription',
+      successUrl: 'http://your-website.com/success',
+      cancelUrl: 'http://your-website.com/cancel',
+    });
+    if (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+return (
+  
   <>
     <nav className="navbar">
       <ul>
@@ -47,7 +73,7 @@ const Navbar = () => (
           <p className="sidebar-top-value red-text">200 Files</p>
         </div>
         <div className="sidebar-top-item">
-          <button className="sidebar-button" >Upgrade</button>
+          <button className="sidebar-button" onClick={handleClick} disabled={loading} >{loading ? 'Loading...' : 'Upgrade'}</button>
         </div>
       </div>
 
@@ -195,5 +221,6 @@ const Navbar = () => (
     `}</style>
   </>
 );
+    }
 
 export default Navbar;
